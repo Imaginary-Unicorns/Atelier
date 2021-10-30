@@ -105,7 +105,7 @@ class App extends React.Component {
       <div>
         <header><span id="logo"></span><span id="searchBar"></span><FaSearch className={'searchBarIcon'} /></header>
         {<Overview productUpdate={this.handleProductUpdate} id={this.state.productId} rating={this.state.totalRating} updateOutfitData={this.updateOutfitData} />}
-        <RelatedProducts id={this.state.productId} productUpdate={this.handleProductUpdate} updateOutfitData={this.updateOutfitData}
+        {/* <RelatedProducts id={this.state.productId} productUpdate={this.handleProductUpdate} updateOutfitData={this.updateOutfitData}
           outfit={this.state.outfit}
           rating={this.getRatingAverage} />
 
@@ -117,7 +117,7 @@ class App extends React.Component {
           id={this.state.productId}
           productName={this.state.productName}
         />}
-         <Reviews totalRating = {this.state.totalRating} id={this.state.productId} productName = {this.state.productName} numOfReviews = {this.state.numOfReviews}/>
+         <Reviews totalRating = {this.state.totalRating} id={this.state.productId} productName = {this.state.productName} numOfReviews = {this.state.numOfReviews}/> */}
       </div >
     );
   }

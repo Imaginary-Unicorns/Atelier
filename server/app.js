@@ -15,6 +15,7 @@ const fs = require('fs');
 
 const reviewURL = 'https://app-hrsei-api.herokuapp.com/api/fec2/hr-rpp/reviews';
 const API_URL = 'https://app-hrsei-api.herokuapp.com/api/fec2/hr-rpp';
+const PRODUCT_SERVICE_URL = 'http://localhost:4500'
 
 //app.use(express.static(path.resolve(__dirname, '../client/dist')));
 //this is a regex expression that will allow the app to serve the static files
@@ -30,6 +31,13 @@ app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
   res.sendFile('index.html');
+});
+app.get('/', (req, res) => {
+  res.sendFile('index.html', {root: './client'});
+});
+
+app.get(/^\/\b\d{5}$/, (req, res) => {
+  res.sendFile('index.html', {root: './client'});
 });
 /*
   ---------------------------
@@ -219,16 +227,22 @@ app.get('/product', (req, res) => {
   let id = req.query.id;
   axios({
     method: 'get',
-    url: `${API_URL}/products/${id}`,
+    url: `${PRODUCT_SERVICE_URL}/products/`,
     headers: {
       Authorization: process.env.API_TOKEN
+    },
+    data: {
+      productId: id
     }
   }).then(function (response) {
-    dataStr = JSON.stringify(response.data);
+    //console.log(response, 'product_id data')
+    const dataStr = JSON.stringify(response.data);
+    //console.log(dataStr);
     res.send(dataStr);
     res.end();
   }).catch(function (error) {
     console.log('/products api request error: ', error);
+    res.sendStatus(501);
   })
 });
 
@@ -236,47 +250,53 @@ app.get('/styles', (req, res) => {
   let id = req.query.id;
   axios({
     method: 'get',
-    url: `${API_URL}/products/${id}/styles`,
+    url: `${PRODUCT_SERVICE_URL}/products/styles`,
     headers: {
       Authorization: process.env.API_TOKEN
+    },
+    data: {
+      productId: id
     }
   }).then(function (response) {
-    dataStr = JSON.stringify(response.data);
+
+    const dataStr = JSON.stringify(response.data);
+    //console.log(dataStr);
     res.send(dataStr);
     res.end();
   }).catch(function (error) {
     console.log('/styles api request error: ', error);
+    res.sendStatus(501);
   })
 })
 
-/* exploring products
+// /* exploring products
 
-app.get('/product-list', (req, res) => {
-  let idList = [];
-  axios({
-    method: 'get',
-    url: `${API_URL}/products/`,
-    headers: {
-      Authorization: process.env.API_TOKEN
-    },
-    params: {
-      count: 500
-    }
-  }).then(function (response) {
-    data = response.data;
-    data.forEach(obj => idList.push(obj.id));
-    console.log('idlist: ', idList);
-    fs.writeFile(__dirname + 'idlist.txt', JSON.stringify(idList), (err) => {
-      if (err) {
-        console.log('error writing file: ', err);
-        return;
-      }
-    })
-  }).catch(function (error) {
-    console.log('/styles api request error: ', error);
-  })
-})
-*/
+// app.get('/product-list', (req, res) => {
+//   let idList = [];
+//   axios({
+//     method: 'get',
+//     url: `${API_URL}/products/`,
+//     headers: {
+//       Authorization: process.env.API_TOKEN
+//     },
+//     params: {
+//       count: 500
+//     }
+//   }).then(function (response) {
+//     data = response.data;
+//     data.forEach(obj => idList.push(obj.id));
+//     console.log('idlist: ', idList);
+//     fs.writeFile(__dirname + 'idlist.txt', JSON.stringify(idList), (err) => {
+//       if (err) {
+//         console.log('error writing file: ', err);
+//         return;
+//       }
+//     })
+//   }).catch(function (error) {
+//     console.log('/styles api request error: ', error);
+//   })
+// })
+// */
 
 /*
   ----------------------------
