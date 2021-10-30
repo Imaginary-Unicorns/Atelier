@@ -15,27 +15,9 @@ class RelatedProducts extends React.Component {
       defaultImages: [],
       yourOutfitData: [],
       yourOutfitImageURLs: [],
-      defaultProductId: 47421,
+      defaultProductId: this.props.id,
       overviewProductData: {
-        "id": 47421,
-        "campus": "hr-rpp",
-        "name": "Camo Onesie",
-        "slogan": "Blend in to your crowd",
-        "description": "The So Fatigues will wake you up and fit you in. This high energy camo will have you blending in to even the wildest surroundings.",
-        "category": "Jackets",
-        "default_price": "140.00",
-        "created_at": "2021-08-26T20:30:48.129Z",
-        "updated_at": "2021-08-26T20:30:48.129Z",
-        "features": [
-          {
-            "feature": "Fabric",
-            "value": "Canvas"
-          },
-          {
-            "feature": "Buttons",
-            "value": "Brass"
-          }
-        ]
+
       }
     }
     this.getRelatedProductsData = this.getRelatedProductsData.bind(this);
@@ -64,13 +46,14 @@ class RelatedProducts extends React.Component {
   }
 
   getRelatedProductsStyles() {
+    //console.log('get related product styles called on parent', this.state.defaultProductId )
     axios.get('/relatedProductStyles', {
       params: {
         defaultProductId: this.state.defaultProductId
       }
     })
       .then((relatedProductsStyles) => {
-        //console.log('success getting related products styles in related products client index: ', relatedProductsStyles.data);
+        //console.log('success getting related products styles in related products client index: ', relatedProductsStyles);
         let imagesArray = [];
         let defaultImagesArray = [];
         let styleData = relatedProductsStyles.data

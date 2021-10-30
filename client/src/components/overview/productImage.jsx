@@ -30,7 +30,7 @@ class ProductImage extends React.Component {
 
   mainImageClick(event) {
     this.props.postTrackInteractions('Main Image', 'Product Image');
-    console.log('main image expand click');
+    //console.log('main image expand click');
     this.props.clickHandler(event);
   }
 
@@ -46,10 +46,10 @@ class ProductImage extends React.Component {
   unp = this.updateNumPhotos();
 
   changeSelection(num) {
-    console.log('changeselection num: ', num);
+    //console.log('changeselection num: ', num);
     let currentIndex = this.state.selectedIndex;
     let length = this.state.numPhotos;
-    console.log(`currentI: ${currentIndex}, numPhotos: ${length}`)
+    //console.log(`currentI: ${currentIndex}, numPhotos: ${length}`)
     if (num === -1 && currentIndex > 0) {
       currentIndex += num;
       this.setState({ selectedIndex: currentIndex });
@@ -70,12 +70,12 @@ class ProductImage extends React.Component {
   }
 
   makeExpand(flag) {
-    console.log('makeExpand: ', flag);
+    //console.log('makeExpand: ', flag);
     let imgUrl = this.props.mainImg;
     let imgSource = new Image();
     imgSource.src = imgUrl;
     imgSource.onload = function() {
-      console.log('imgSource loaded');
+      //console.log('imgSource loaded');
       let zoomer = document.getElementById('expandImage')
         || document.querySelector('.mainImg');
       let imgWidth = zoomer.naturalWidth;

@@ -12,7 +12,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      productId: Number((window.location.pathname.split('/')[1] || 47421)),
+      productId: Number((window.location.pathname.split('/')[1])) ? Number((window.location.pathname.split('/')[1])) : 12000,
       productName: 'Camo Onesie',
       productFeatures: [],
       quesAns: [],
@@ -105,11 +105,11 @@ class App extends React.Component {
       <div>
         <header><span id="logo"></span><span id="searchBar"></span><FaSearch className={'searchBarIcon'} /></header>
         {<Overview productUpdate={this.handleProductUpdate} id={this.state.productId} rating={this.state.totalRating} updateOutfitData={this.updateOutfitData} />}
-        {/* <RelatedProducts id={this.state.productId} productUpdate={this.handleProductUpdate} updateOutfitData={this.updateOutfitData}
+        {<RelatedProducts id={this.state.productId} productUpdate={this.handleProductUpdate} updateOutfitData={this.updateOutfitData}
           outfit={this.state.outfit}
           rating={this.getRatingAverage} />
 
-
+        /*
         {quesAns.length > 0 && <QuesAnsMain
           handleQAUpdate={this.handleQAUpdate}
           productUpdate={this.handleProductUpdate}

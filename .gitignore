@@ -120,3 +120,4 @@ client/dist/test.html
 .DS_Store
 #bundle
 ./client/dist/bundle.js
+bundle.js
