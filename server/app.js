@@ -15,6 +15,7 @@ const fs = require('fs');
 
 const reviewURL = 'https://app-hrsei-api.herokuapp.com/api/fec2/hr-rpp/reviews';
 const API_URL = 'https://app-hrsei-api.herokuapp.com/api/fec2/hr-rpp';
+const PRODUCT_SERVICE_URL = 'http://localhost:4500'
 
 //app.use(express.static(path.resolve(__dirname, '../client/dist')));
 //this is a regex expression that will allow the app to serve the static files
@@ -28,9 +29,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 
+// app.get('/', (req, res) => {
+//   res.sendFile('index.html');
+// });
 app.get('/', (req, res) => {
-  res.sendFile('index.html');
+  res.redirect('/12000');
 });
+
 /*
   ---------------------------
   | Atelier Interactions API
@@ -219,16 +224,22 @@ app.get('/product', (req, res) => {
   let id = req.query.id;
   axios({
     method: 'get',
-    url: `${API_URL}/products/${id}`,
+    url: `${PRODUCT_SERVICE_URL}/products/`,
     headers: {
       Authorization: process.env.API_TOKEN
+    },
+    data: {
+      productId: id
     }
   }).then(function (response) {
-    dataStr = JSON.stringify(response.data);
+    //console.log(response, 'product_id data')
+    const dataStr = JSON.stringify(response.data);
+    //console.log(dataStr);
     res.send(dataStr);
     res.end();
   }).catch(function (error) {
     console.log('/products api request error: ', error);
+    res.sendStatus(501);
   })
 });
 
@@ -236,47 +247,53 @@ app.get('/styles', (req, res) => {
   let id = req.query.id;
   axios({
     method: 'get',
-    url: `${API_URL}/products/${id}/styles`,
+    url: `${PRODUCT_SERVICE_URL}/products/styles`,
     headers: {
       Authorization: process.env.API_TOKEN
+    },
+    data: {
+      productId: id
     }
   }).then(function (response) {
-    dataStr = JSON.stringify(response.data);
+
+    const dataStr = JSON.stringify(response.data);
+    //console.log(dataStr);
     res.send(dataStr);
     res.end();
   }).catch(function (error) {
     console.log('/styles api request error: ', error);
+    res.sendStatus(501);
   })
 })
 
-/* exploring products
+// /* exploring products
 
-app.get('/product-list', (req, res) => {
-  let idList = [];
-  axios({
-    method: 'get',
-    url: `${API_URL}/products/`,
-    headers: {
-      Authorization: process.env.API_TOKEN
-    },
-    params: {
-      count: 500
-    }
-  }).then(function (response) {
-    data = response.data;
-    data.forEach(obj => idList.push(obj.id));
-    console.log('idlist: ', idList);
-    fs.writeFile(__dirname + 'idlist.txt', JSON.stringify(idList), (err) => {
-      if (err) {
-        console.log('error writing file: ', err);
-        return;
-      }
-    })
-  }).catch(function (error) {
-    console.log('/styles api request error: ', error);
-  })
-})
-*/
+// app.get('/product-list', (req, res) => {
+//   let idList = [];
+//   axios({
+//     method: 'get',
+//     url: `${API_URL}/products/`,
+//     headers: {
+//       Authorization: process.env.API_TOKEN
+//     },
+//     params: {
+//       count: 500
+//     }
+//   }).then(function (response) {
+//     data = response.data;
+//     data.forEach(obj => idList.push(obj.id));
+//     console.log('idlist: ', idList);
+//     fs.writeFile(__dirname + 'idlist.txt', JSON.stringify(idList), (err) => {
+//       if (err) {
+//         console.log('error writing file: ', err);
+//         return;
+//       }
+//     })
+//   }).catch(function (error) {
+//     console.log('/styles api request error: ', error);
+//   })
+// })
+// */
 
 /*
   ----------------------------
@@ -287,14 +304,17 @@ let retrieveRelatedProductStyles = (relatedProductIds) => {
   let stylesPromises = [];
   for (var i = 0; i < relatedProductIds.length; i++) {
     let currentProduct = relatedProductIds[i];
-    let APIStylesRequest = axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/hr-rpp/products/${currentProduct}/styles`, {
+    let APIStylesRequest = axios.get(`${PRODUCT_SERVICE_URL}/products/styles`, {
       headers: {
         'Authorization': process.env.API_TOKEN,
-        'product_id': currentProduct
+      },
+      data: {
+        productId: currentProduct
       }
     });
     stylesPromises.push(APIStylesRequest);
   }
+  //console.log(stylesPromises, ' retrive related product styles function');
   let stylesInfo = Promise.all(stylesPromises);
   return stylesInfo;
 
@@ -304,10 +324,12 @@ let retrieveRelatedProducts = (relatedProductIds) => {
   let promisesArray = [];
   for (var i = 0; i < relatedProductIds.length; i++) {
     let currentProduct = relatedProductIds[i];
-    let APIRequest = axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/hr-rpp/products/${currentProduct}`, {
+    let APIRequest = axios.get(`${PRODUCT_SERVICE_URL}/products/`, {
       headers: {
         'Authorization': process.env.API_TOKEN,
-        'product_id': currentProduct
+      },
+      data: {
+        productId: currentProduct
       }
     });
     promisesArray.push(APIRequest);
@@ -319,14 +341,16 @@ let retrieveRelatedProducts = (relatedProductIds) => {
 
 app.get('/relatedProducts', (req, res) => {
   let parentProductId = Number(req.query.defaultProductId);
-  axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/hr-rpp/products/${parentProductId}/related`, {
+  axios.get(`${PRODUCT_SERVICE_URL}/products/related`, {
     headers: {
       'Authorization': process.env.API_TOKEN,
-      'product_id': parentProductId
+    },
+    data: {
+      productId: parentProductId
     }
   })
     .then((relatedProducts) => {
-      return retrieveRelatedProducts(relatedProducts.data)
+      return retrieveRelatedProducts(relatedProducts.data, 'related products data')
     })
     .then((arrayOfResponses) => {
       let data = arrayOfResponses.map(res => {
@@ -342,17 +366,21 @@ app.get('/relatedProducts', (req, res) => {
 
 app.get('/relatedProductStyles', (req, res) => {
   let parentProductId = Number(req.query.defaultProductId);
-  axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/hr-rpp/products/${parentProductId}/related`, {
+  axios.get(`${PRODUCT_SERVICE_URL}/products/related`, {
     headers: {
       'Authorization': process.env.API_TOKEN,
-      'product_id': parentProductId
+    },
+    data: {
+      productId: parentProductId
     }
   })
     .then((relatedProducts) => {
+      //console.log('related products:' , relatedProducts.data)
       return retrieveRelatedProductStyles(relatedProducts.data)
     })
-    .then((arrayOfStyleResponses) => {
-      let styleData = arrayOfStyleResponses.map(res => {
+    .then(async (arrayOfStyleResponses) => {
+      //console.log(arrayOfStyleResponses, ' style responses')
+      let styleData = await arrayOfStyleResponses.map(res => {
         return res.data
       })
       res.json(styleData);
@@ -370,7 +398,7 @@ app.get('/yourOutfitProductData', (req, res) => {
   let arrayOfOutfitPromises = [];
   for (var i = 0; i < yourOutfitIds.length; i++) {
     let id = yourOutfitIds[i];
-    arrayOfOutfitPromises.push(axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/hr-rpp/products/${id}`, {
+    arrayOfOutfitPromises.push(axios.get(`${PRODUCT_SERVICE_URL}/products/`, {
       headers: {
         'Authorization': process.env.API_TOKEN,
         'product_id': id
@@ -396,10 +424,12 @@ app.get('/yourOutfitStyles', (req, res) => {
   let arrayOfStylePromises = [];
   for (var i = 0; i < yourOutfitIds.length; i++) {
     let id = yourOutfitIds[i];
-    arrayOfStylePromises.push(axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/hr-rpp/products/${id}/styles`, {
+    arrayOfStylePromises.push(axios.get(`${PRODUCT_SERVICE_URL}/products/styles`, {
       headers: {
         'Authorization': process.env.API_TOKEN,
-        'product_id': id
+      },
+      data: {
+        productId: id
       }
     }))
   }
