@@ -100,6 +100,7 @@ class App extends React.Component {
 
   render() {
     const { quesAns } = this.state;
+    console.log('App product Id: ', this.state.productId);
 
     return (
       <div>

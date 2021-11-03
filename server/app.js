@@ -15,13 +15,23 @@ const fs = require('fs');
 
 const reviewURL = 'https://app-hrsei-api.herokuapp.com/api/fec2/hr-rpp/reviews';
 const API_URL = 'https://app-hrsei-api.herokuapp.com/api/fec2/hr-rpp';
+<<<<<<< HEAD
 const PRODUCT_SERVICE_URL = 'http://localhost:4500'
 
+=======
+const PRODUCTS_SERVICE = 'http://localhost:4500';
+>>>>>>> 358bcf7a1bba572858ce284f332bc6ebd53f56c5
 //app.use(express.static(path.resolve(__dirname, '../client/dist')));
 //this is a regex expression that will allow the app to serve the static files
 //dynamically with our default product id and a real url
 app.use(compression());
+app.use('/:id(\\d{1})', express.static('client/dist'));
+app.use('/:id(\\d{2})', express.static('client/dist'));
+app.use('/:id(\\d{3})', express.static('client/dist'));
+app.use('/:id(\\d{4})', express.static('client/dist'));
 app.use('/:id(\\d{5})', express.static('client/dist'));
+app.use('/:id(\\d{6})', express.static('client/dist'));
+app.use('/:id(\\d{7})', express.static('client/dist'));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -33,7 +43,11 @@ app.use(bodyParser.json());
 //   res.sendFile('index.html');
 // });
 app.get('/', (req, res) => {
+<<<<<<< HEAD
   res.redirect('/12000');
+=======
+  res.sendFile('/');
+>>>>>>> 358bcf7a1bba572858ce284f332bc6ebd53f56c5
 });
 
 /*
@@ -224,7 +238,11 @@ app.get('/product', (req, res) => {
   let id = req.query.id;
   axios({
     method: 'get',
+<<<<<<< HEAD
     url: `${PRODUCT_SERVICE_URL}/products/`,
+=======
+    url: `${PRODUCTS_SERVICE}/products`,
+>>>>>>> 358bcf7a1bba572858ce284f332bc6ebd53f56c5
     headers: {
       Authorization: process.env.API_TOKEN
     },
@@ -247,7 +265,11 @@ app.get('/styles', (req, res) => {
   let id = req.query.id;
   axios({
     method: 'get',
+<<<<<<< HEAD
     url: `${PRODUCT_SERVICE_URL}/products/styles`,
+=======
+    url: `${PRODUCTS_SERVICE}/products/styles`,
+>>>>>>> 358bcf7a1bba572858ce284f332bc6ebd53f56c5
     headers: {
       Authorization: process.env.API_TOKEN
     },
@@ -304,9 +326,16 @@ let retrieveRelatedProductStyles = (relatedProductIds) => {
   let stylesPromises = [];
   for (var i = 0; i < relatedProductIds.length; i++) {
     let currentProduct = relatedProductIds[i];
+<<<<<<< HEAD
     let APIStylesRequest = axios.get(`${PRODUCT_SERVICE_URL}/products/styles`, {
       headers: {
         'Authorization': process.env.API_TOKEN,
+=======
+    let APIStylesRequest = axios.get(`${PRODUCTS_SERVICE}/products/styles`, {
+      headers: {
+        'Authorization': process.env.API_TOKEN,
+        'product_id': currentProduct
+>>>>>>> 358bcf7a1bba572858ce284f332bc6ebd53f56c5
       },
       data: {
         productId: currentProduct
@@ -324,14 +353,22 @@ let retrieveRelatedProducts = (relatedProductIds) => {
   let promisesArray = [];
   for (var i = 0; i < relatedProductIds.length; i++) {
     let currentProduct = relatedProductIds[i];
+<<<<<<< HEAD
     let APIRequest = axios.get(`${PRODUCT_SERVICE_URL}/products/`, {
       headers: {
         'Authorization': process.env.API_TOKEN,
+=======
+    let APIRequest = axios.get(`${PRODUCTS_SERVICE}/products`, {
+      headers: {
+        'Authorization': process.env.API_TOKEN,
+        'product_id': currentProduct
+>>>>>>> 358bcf7a1bba572858ce284f332bc6ebd53f56c5
       },
       data: {
         productId: currentProduct
       }
     });
+
     promisesArray.push(APIRequest);
   }
   let productInfo = Promise.all(promisesArray);
@@ -341,9 +378,16 @@ let retrieveRelatedProducts = (relatedProductIds) => {
 
 app.get('/relatedProducts', (req, res) => {
   let parentProductId = Number(req.query.defaultProductId);
+<<<<<<< HEAD
   axios.get(`${PRODUCT_SERVICE_URL}/products/related`, {
     headers: {
       'Authorization': process.env.API_TOKEN,
+=======
+  axios.get(`${PRODUCTS_SERVICE}/products/related`, {
+    headers: {
+      'Authorization': process.env.API_TOKEN,
+      'product_id': parentProductId
+>>>>>>> 358bcf7a1bba572858ce284f332bc6ebd53f56c5
     },
     data: {
       productId: parentProductId
@@ -366,9 +410,16 @@ app.get('/relatedProducts', (req, res) => {
 
 app.get('/relatedProductStyles', (req, res) => {
   let parentProductId = Number(req.query.defaultProductId);
+<<<<<<< HEAD
   axios.get(`${PRODUCT_SERVICE_URL}/products/related`, {
     headers: {
       'Authorization': process.env.API_TOKEN,
+=======
+  axios.get(`${PRODUCTS_SERVICE}/products/related`, {
+    headers: {
+      'Authorization': process.env.API_TOKEN,
+      'product_id': parentProductId
+>>>>>>> 358bcf7a1bba572858ce284f332bc6ebd53f56c5
     },
     data: {
       productId: parentProductId
@@ -398,10 +449,17 @@ app.get('/yourOutfitProductData', (req, res) => {
   let arrayOfOutfitPromises = [];
   for (var i = 0; i < yourOutfitIds.length; i++) {
     let id = yourOutfitIds[i];
+<<<<<<< HEAD
     arrayOfOutfitPromises.push(axios.get(`${PRODUCT_SERVICE_URL}/products/`, {
+=======
+    arrayOfOutfitPromises.push(axios.get(`${PRODUCTS_SERVICE}/products`, {
+>>>>>>> 358bcf7a1bba572858ce284f332bc6ebd53f56c5
       headers: {
         'Authorization': process.env.API_TOKEN,
         'product_id': id
+      },
+      data: {
+        productId: id
       }
     }))
 
@@ -424,9 +482,16 @@ app.get('/yourOutfitStyles', (req, res) => {
   let arrayOfStylePromises = [];
   for (var i = 0; i < yourOutfitIds.length; i++) {
     let id = yourOutfitIds[i];
+<<<<<<< HEAD
     arrayOfStylePromises.push(axios.get(`${PRODUCT_SERVICE_URL}/products/styles`, {
       headers: {
         'Authorization': process.env.API_TOKEN,
+=======
+    arrayOfStylePromises.push(axios.get(`${PRODUCTS_SERVICE}/products/styles`, {
+      headers: {
+        'Authorization': process.env.API_TOKEN,
+        'product_id': id
+>>>>>>> 358bcf7a1bba572858ce284f332bc6ebd53f56c5
       },
       data: {
         productId: id
