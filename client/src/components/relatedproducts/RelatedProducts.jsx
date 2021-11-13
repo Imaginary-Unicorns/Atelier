@@ -36,6 +36,7 @@ class RelatedProducts extends React.Component {
     })
       .then((relatedProductsData) => {
         //console.log('success getting related products data in related products client index: ', relatedProductsData.data);
+
         this.setState({
           relatedProductsData: relatedProductsData.data
         })
@@ -53,16 +54,21 @@ class RelatedProducts extends React.Component {
       }
     })
       .then((relatedProductsStyles) => {
-        //console.log('success getting related products styles in related products client index: ', relatedProductsStyles);
+        //console.log('success getting related products styles in related products client index: ', relatedProductsStyles.data);
         let imagesArray = [];
         let defaultImagesArray = [];
         let styleData = relatedProductsStyles.data
         for (var i = 0; i < styleData.length; i++) {
-          let stylesDataItem = relatedProductsStyles.data[i].results[0].photos;
-          imagesArray.push(stylesDataItem);
+          if(relatedProductsStyles.data[i].results[0] !== undefined) {
+
+            let stylesDataItem = relatedProductsStyles.data[i].results[0].photos;
+            imagesArray.push(stylesDataItem);
+          }
         }
         for (var i = 0; i < imagesArray.length; i++) {
-          defaultImagesArray.push(imagesArray[i][0].thumbnail_url);
+          if(imagesArray[i][0] !== undefined){
+            defaultImagesArray.push(imagesArray[i][0].thumbnail_url);
+          }
         }
         this.setState({
           defaultImages: defaultImagesArray

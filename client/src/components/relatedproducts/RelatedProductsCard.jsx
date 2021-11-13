@@ -41,6 +41,7 @@ class RelatedProductsCard extends React.Component {
   }
 
   render() {
+    // console.log('productcard image: ', this.props.image);
     return (
       <div>
 

@@ -40,7 +40,7 @@ class Overview extends React.Component {
       url: '/product',
       params: { id: id }
     }).then((response) => {
-      console.log('product get res: ', response);
+      //console.log('product get res: ', response);
       let data = response.data;
       this.setState({ productDetails: data, detailsLoaded: true });
     }).catch((error) => {
