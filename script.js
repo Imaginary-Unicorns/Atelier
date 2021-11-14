@@ -20,7 +20,7 @@ export const options = {
 };
 
 export default function () {
-  const res = http.get('http://localhost:3000/styles?id=799999');
+  const res = http.get('http://localhost:3000/799999/');
   check(res, { 'status was 200': (r) => r.status == 200 });
   sleep(1);
 }
