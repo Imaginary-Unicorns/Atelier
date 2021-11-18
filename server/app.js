@@ -84,7 +84,7 @@ app.post('/reviews', (req, res) => {
   //   headers: {'Authorization': process.env.API_TOKEN},
   //   params:
   // }
-  axios.post('https://ec2-18-234-210-119.compute-1.amazonaws.com:3333/reviews', newReview, {
+  axios.post('https://ec2-18-234-210-119.compute-1.amazonaws.com/reviews', newReview, {
     // headers: {Authorization: process.env.API_TOKEN}
   })
   .then((response) => {
@@ -121,10 +121,6 @@ app.get('/reviews', (req, res) => {
       res.send(err.response.status)
       // throw err
     })
-
-  axios.get('http://127.0.0.1:4000/test')
-    .then(data => console.log(data.data))
-    .catch(err => console.log(err))
 })
 
 app.get('/reviewratings', (req, res) => {
