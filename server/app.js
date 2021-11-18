@@ -121,6 +121,10 @@ app.get('/reviews', (req, res) => {
       res.send(err.response.status)
       // throw err
     })
+
+  axios.get('http://127.0.0.1:4000/test')
+    .then(data => console.log(data.data))
+    .catch(err => console.log(err))
 })
 
 app.get('/reviewratings', (req, res) => {
