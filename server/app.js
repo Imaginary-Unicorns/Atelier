@@ -111,7 +111,7 @@ app.get('/reviews', (req, res) => {
 
   // console.log(typeof product_id)
   console.log('getting reviews')
-  axios.get('54.227.15.190:3333/reviews', config)
+  axios.get('54.227.15.190/reviews', config)
     .then(data => {
       console.log('api response: ', data.data);
       return res.json(data.data)
@@ -132,7 +132,7 @@ app.get('/reviewratings', (req, res) => {
   }
 
   // console.log(typeof product_id)
-  axios.get('54.227.15.190:3333reviews/', config)
+  axios.get('54.227.15.190/reviews/', config)
     .then(data => {
       // console.log('api response: ', data.data.results);
       return res.json(data.data)
@@ -149,7 +149,7 @@ app.get('/reviewmeta', (req, res) => {
     // headers: { 'Authorization': process.env.API_TOKEN },
     params: { 'product_id': product_id }
   }
-  axios.get('54.227.15.190:3333reviews/meta', config)
+  axios.get('54.227.15.190/reviews/meta', config)
   .then(metadata => {
     // console.log('meta api response: ', metadata.data);
     res.json(metadata.data)
@@ -166,7 +166,7 @@ app.get('/reviewhelpful', (req, res) => {
   }
   axios({
     method: 'put',
-    url: `54.227.15.190:3333/reviews/${req.query.review_id}/helpful`,
+    url: `54.227.15.190/reviews/${req.query.review_id}/helpful`,
     data: { review_id: req.query.review_id },
     headers: {
       // Authorization: process.env.API_TOKEN
@@ -184,12 +184,12 @@ app.get('/reviewhelpful', (req, res) => {
 })
 
 app.get('/reviewreport', (req, res) => {
-  let url = `54.227.15.190:3333/reviews/${req.query.review_id}/report`
+  let url = `54.227.15.190/reviews/${req.query.review_id}/report`
   // console.log('report url, ', url)
 
   axios({
     method: 'put',
-    url: `54.227.15.190:3333/reviews/${req.query.review_id}/report`,
+    url: `54.227.15.190/reviews/${req.query.review_id}/report`,
     data: { review_id: req.query.review_id },
     headers: {
       // Authorization: process.env.API_TOKEN
