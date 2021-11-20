@@ -84,7 +84,7 @@ app.post('/reviews', (req, res) => {
   //   headers: {'Authorization': process.env.API_TOKEN},
   //   params:
   // }
-  axios.post('54.227.15.190:3333/reviews', newReview, {
+  axios.post('http://54.227.15.190/reviews', newReview, {
     // headers: {Authorization: process.env.API_TOKEN}
   })
   .then((response) => {
@@ -111,7 +111,7 @@ app.get('/reviews', (req, res) => {
 
   // console.log(typeof product_id)
   console.log('getting reviews')
-  axios.get('54.227.15.190/reviews', config)
+  axios.get('http://54.227.15.190/reviews', config)
     .then(data => {
       console.log('api response: ', data.data);
       return res.json(data.data)
